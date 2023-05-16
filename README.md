@@ -1,11 +1,10 @@
 # sql
-a collection of queries i have written in various professional and educational projects, where proprietary info has been scrubbed from the files.
+A collection of queries I have written in various professional and educational projects, where proprietary info has been scrubbed from the files.
 
-this code is collected from the period of 2018-now
+This code is collected from the period of 2018-now
 
-the purpose of this repository is to be a porfolio of my work, where this satisfies many objectives:
+**Purpose**: this repository is a porfolio of my work, satisfying the following objectives:
 
-  a way to collect my queries for reuse in future projects
-  an open source of queries for others to use as needed
-  proven expertise of query development for future employment and teaching purposes
-
+- A method to collect my queries for reuse in future projects
+- An open source of queries for others to use as needed, per GNU GPL
+- Proven expertise of query development for future employment and teaching purposes
