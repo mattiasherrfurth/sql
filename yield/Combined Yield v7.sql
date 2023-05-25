@@ -1,6 +1,6 @@
 /*-----------------------------------------------------------------------------						
 -- Title:      Combined Yield						
--- Author:     Jordan Moshe		
+-- Author:     Mattias Herrfurth		
 -- Created:    4/29/2019						
 -- Purpose:    This query pulls data to generate yield that recreate legacy pyramid reports						
 --             In addition, WEBI data can be recreated based on the value filters in the WEBIyield and Pyramidyield fields
@@ -9,9 +9,9 @@
 -- Current version:     7						
 -- Modification History:						
 --						
--- Version 1 - 04/29/2019 - Jordan Moshe						
+-- Version 1 - 04/29/2019 - Mattias Herrfurth						
 --       Published
--- Version 2 - 05/20/2019 - Jordan Moshe						
+-- Version 2 - 05/20/2019 - Mattias Herrfurth						
 --       -Added trim to ordr_sprt_ser_no, 
 --       -Switched month field to format M,
 --       -Added DATE field that Excel should be able identify as a date, 
@@ -21,7 +21,7 @@
 --       -Added orop_typ field to have better visibility on un/planned nature of work because iloe_unplanned_ind shows unplanned on OE ZC55 added operations
 --       -Changed SEQgetter subquery filter from iloe_unplanned_ind = 'N' to orop_typ = 'STD'
 --       -Filtered out manufacturing work centers not in a specific list
--- Version 3 - 05/30/2019 - Jordan Moshe		
+-- Version 3 - 05/30/2019 - Mattias Herrfurth		
 --       -Added Order By clause for ease of using raw results
 --       -Added date filter for subquery that's back dated based on results of query to find largest span of order results and dropping outliers.
 -- Version 4 - 06/17/2019 - Mattias Herrfurth
