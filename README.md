@@ -1,7 +1,7 @@
-# sql
+# SQL
 A collection of queries I have written in various professional and educational projects, where proprietary info has been scrubbed from the files.
 
-This code is collected from the period of 2018-now
+**Flavors**: PL/SQL, T-SQL, PostgreSQL, and a custom ODBC driver.
 
 **Purpose**: this repository is a porfolio of my work, satisfying the following objectives:
 
