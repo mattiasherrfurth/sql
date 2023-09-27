@@ -1,0 +1,270 @@
+DROP TABLE IF EXISTS schema_name_here.asn_trace_id;
+DROP TABLE IF EXISTS schema_name_here.asn_partner_product_id;
+DROP TABLE IF EXISTS schema_name_here.asn_manufacturer_profile;
+DROP TABLE IF EXISTS schema_name_here.asn_lot_ship_quantity;
+DROP TABLE IF EXISTS schema_name_here.asn_lot_ship_reference;
+DROP TABLE IF EXISTS schema_name_here.asn_doc_subline_lot_ship;
+DROP TABLE IF EXISTS schema_name_here.asn_ship_container_item;
+DROP TABLE IF EXISTS schema_name_here.asn_ship_container;
+DROP TABLE IF EXISTS schema_name_here.asn_tracking_reference;
+DROP TABLE IF EXISTS schema_name_here.asn_ship_transport_event;
+DROP TABLE IF EXISTS schema_name_here.asn_global_carrier_code;
+DROP TABLE IF EXISTS schema_name_here.asn_ship;
+DROP TABLE IF EXISTS schema_name_here.asn_ship_raw;
+--asn_ship_raw
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_ship_raw
+(
+	TEK_ASN_ID serial PRIMARY KEY,
+	FILE_ID INTEGER NOT NULL,
+	ASN XML NOT NULL,
+	source CHARACTER VARYING(20),
+	kind CHARACTER VARYING(10),
+	CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+	CONSTRAINT fk_tek_asn_fileid FOREIGN KEY (FILE_ID)
+		REFERENCES schema_name_here.FILES_METADATA (FILE_ID) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+--asn_ship
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_ship
+(
+	SHIP_ID INTEGER PRIMARY KEY,
+	FILE_ID INTEGER NOT NULL,
+	Source CHARACTER VARYING(20),
+	kind CHARACTER VARYING(10),
+	Buying_Partner_Name CHARACTER VARYING(80),
+	Buying_Partner_ID CHARACTER VARYING(20),
+	Buying_Partner_Class_Code CHARACTER VARYING(40),
+	Buying_Global_Location_ID CHARACTER VARYING(40),
+	Buying_Addr1 CHARACTER VARYING(60),
+	Buying_Addr2 CHARACTER VARYING(60),
+	Buying_Addr3 CHARACTER VARYING(60),
+	Buying_City CHARACTER VARYING(40),
+	Buying_Country CHARACTER VARYING(20),
+	Buying_Postal_Code CHARACTER VARYING(20),
+	Buying_Region CHARACTER VARYING(20),
+	Originating_Partner_Name CHARACTER VARYING(80),
+	Originating_Partner_ID CHARACTER VARYING(20),
+	Originating_Partner_Class_Code CHARACTER VARYING(40),
+	Originating_Addr1 CHARACTER VARYING(60),
+	Originating_Addr2 CHARACTER VARYING(60),
+	Originating_Addr3 CHARACTER VARYING(60),
+	Originating_City CHARACTER VARYING(40),
+	Originating_Country CHARACTER VARYING(20),
+	Originating_Postal_Code CHARACTER VARYING(20),
+	Originating_Region CHARACTER VARYING(20),
+	Selling_Partner_Name CHARACTER VARYING(80),
+	Selling_Partner_ID CHARACTER VARYING(20),
+	Selling_Partner_Class_Code CHARACTER VARYING(40),
+	Selling_Addr1 CHARACTER VARYING(60),
+	Selling_Addr2 CHARACTER VARYING(60),
+	Selling_Addr3 CHARACTER VARYING(60),
+	Selling_City CHARACTER VARYING(40),
+	Selling_Country CHARACTER VARYING(20),
+	Selling_Postal_Code CHARACTER VARYING(20),
+	Selling_Region CHARACTER VARYING(20),
+	Global_Shipment_Mode_Code CHARACTER VARYING(20),
+	Global_Shipping_Service_Level_Code CHARACTER VARYING(20),
+	Number_Shipping_Containers INTEGER,
+	Receiving_Partner_name CHARACTER VARYING(80),
+	Receiving_Partner_ID CHARACTER VARYING(20),
+	Receiving_Partner_Class_Code CHARACTER VARYING(40),
+	Global_Location_ID CHARACTER VARYING(20),
+	Receiving_Partner_Address_1 CHARACTER VARYING(60),
+	Receiving_Partner_Address_2 CHARACTER VARYING(60),
+	Receiving_Partner_Address_3 CHARACTER VARYING(60),
+	Receiving_Partner_City CHARACTER VARYING(40),
+	Receiving_Partner_Country_Code CHARACTER VARYING(20),
+	Receiving_Partner_Post_Code CHARACTER VARYING(20),
+	Receiving_Partner_Region_Name CHARACTER VARYING(20),
+	Shipment_Change_Reason CHARACTER VARYING(100),
+	Shipment_ID CHARACTER VARYING(20),
+	Transport_Partner_Name CHARACTER VARYING(80),
+	Transport_Partner_ID CHARACTER VARYING(20),
+	Transport_Partner_Class_Code CHARACTER VARYING(40),
+	Transport_Addr1 CHARACTER VARYING(60),
+	Transport_Addr2 CHARACTER VARYING(60),
+	Transport_Addr3 CHARACTER VARYING(60),
+	Transport_City CHARACTER VARYING(40),
+	Transport_Country CHARACTER VARYING(20),
+	Transport_Postal_Code CHARACTER VARYING(20),
+	Transport_Region CHARACTER VARYING(20),
+	From_Name CHARACTER VARYING(80),
+	From_Email CHARACTER VARYING(80),
+	From_Phone CHARACTER VARYING(20),
+	From_Role_Class_Code CHARACTER VARYING(20),
+	From_ID CHARACTER VARYING(20),
+	From_Supply_Chain_Code CHARACTER VARYING(40),
+	From_Class_Code CHARACTER VARYING(40),
+	Global_Document_Function_Code CHARACTER VARYING(20),
+	Document_Generation_TIMESTAMP TIMESTAMP,
+	Global_Document_ID CHARACTER VARYING(20),
+	To_Name CHARACTER VARYING(80),
+	To_Email CHARACTER VARYING(80),
+	To_Fax CHARACTER VARYING(20),
+	To_Phone CHARACTER VARYING(20),
+	To_Role_Class_Code CHARACTER VARYING(20),
+	To_ID CHARACTER VARYING(20),
+	To_Supply_Chain_Code CHARACTER VARYING(40),
+	To_Class_Code CHARACTER VARYING(40),
+	CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+	CONSTRAINT fk_asn_fileid FOREIGN KEY (FILE_ID)
+		REFERENCES schema_name_here.FILES_METADATA (FILE_ID) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+--asn_global_carrier_code
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_global_carrier_code
+(
+	Global_Carrier_Code_ID INTEGER PRIMARY KEY,
+	SHIP_ID INTEGER NOT NULL,
+	CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+	Global_Carrier_Code CHARACTER VARYING(40),
+	CONSTRAINT fk_shipid FOREIGN KEY (SHIP_ID)
+		REFERENCES schema_name_here.ASN_SHIP (SHIP_ID) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+--asn_ship_transport_event
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_ship_transport_event
+(
+	SHIP_TRANSPORT_EVENT_ID INTEGER PRIMARY KEY,
+	SHIP_ID INTEGER NOT NULL,
+	CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+	Date_Stamp TIMESTAMP,
+	SHIP_DATE_CODE CHARACTER VARYING(40),
+	CONSTRAINT fk_shipid FOREIGN KEY (SHIP_ID)
+		REFERENCES schema_name_here.ASN_SHIP (SHIP_ID) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+--asn_tracking_reference
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_tracking_reference
+(
+	TRACKING_REFERENCE_ID INTEGER PRIMARY KEY,
+	SHIP_ID INTEGER NOT NULL,
+	CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+	Reference_Type_Code CHARACTER VARYING(40),
+	Tracking_ID CHARACTER VARYING(20),
+	CONSTRAINT fk_shipid FOREIGN KEY (SHIP_ID)
+		REFERENCES schema_name_here.ASN_SHIP (SHIP_ID) MATCH SIMPLE
+		ON UPDATE NO ACTION
+		ON DELETE NO ACTION
+);
+--asn_ship_container
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_ship_container
+(
+    SHIP_CONTAINER_ID INTEGER PRIMARY KEY,
+    SHIP_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Package_Type CHARACTER VARYING(20),
+    Number_Of_Containers INTEGER,
+    Container_ID CHARACTER VARYING(20),
+    Dimensions_Unit_Of_Measure CHARACTER VARYING(20),
+    Height CHARACTER VARYING(20),
+    Length CHARACTER VARYING(20),
+    Width CHARACTER VARYING(20),
+    Mass_Unit_Of_Measure CHARACTER VARYING(20),
+    Mass CHARACTER VARYING(20),
+    CONSTRAINT fk_shipid FOREIGN KEY (SHIP_ID)
+        REFERENCES schema_name_here.ASN_SHIP (SHIP_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_ship_container_item
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_ship_container_item
+(
+    SHIP_CONTAINER_ITEM_ID INTEGER PRIMARY KEY,
+    SHIP_CONTAINER_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Unit_Measure_Code CHARACTER VARYING(20),
+    Hazardous_Material CHARACTER VARYING(20),
+    Item_Package_Count INTEGER,
+    Shipped_Quantity INTEGER,
+    Container_Serial_ID CHARACTER VARYING(20),
+    CONSTRAINT fk_shipcontainerid FOREIGN KEY (SHIP_CONTAINER_ID)
+        REFERENCES schema_name_here.ASN_SHIP_CONTAINER (SHIP_CONTAINER_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_doc_subline_lot_ship
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_doc_subline_lot_ship
+(
+    DOC_SUBLINE_LOT_SHIP_ID INTEGER PRIMARY KEY,
+    SHIP_CONTAINER_ITEM_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Doc_Reference_Type_Code CHARACTER VARYING(20),
+    Line_Number INTEGER,
+    Doc_ID CHARACTER VARYING(20),
+    Requested_Quantity INTEGER,
+    Shipped_Quantity INTEGER,
+    CONSTRAINT fk_shipcontaineritemid FOREIGN KEY (SHIP_CONTAINER_ITEM_ID)
+        REFERENCES schema_name_here.ASN_SHIP_CONTAINER_ITEM (SHIP_CONTAINER_ITEM_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_lot_ship_reference
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_lot_ship_reference
+(
+    LOT_SHIP_REF_ID INTEGER PRIMARY KEY,
+    DOC_SUBLINE_LOT_SHIP_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Lot_ID CHARACTER VARYING(20),
+    Manufacturing_Date_Code CHARACTER VARYING(20),
+    CONSTRAINT fk_doclotshipid FOREIGN KEY (DOC_SUBLINE_LOT_SHIP_ID)
+        REFERENCES schema_name_here.ASN_DOC_SUBLINE_LOT_SHIP (DOC_SUBLINE_LOT_SHIP_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_lot_ship_quantity
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_lot_ship_quantity
+(
+    LOT_SHIP_QUANTITY_ID INTEGER PRIMARY KEY,
+    LOT_SHIP_REF_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Lot_Quantity_Class_Code CHARACTER VARYING(20),
+    Unit_Of_Measure_Code CHARACTER VARYING(20),
+    Product_Quantity INTEGER,
+    CONSTRAINT fk_lotshiprefid FOREIGN KEY (LOT_SHIP_REF_ID)
+        REFERENCES schema_name_here.ASN_LOT_SHIP_REFERENCE (LOT_SHIP_REF_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_manufacturer_profile
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_manufacturer_profile
+(
+    Manufacturer_Profile_ID INTEGER PRIMARY KEY,
+    SHIP_CONTAINER_ITEM_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Country_Code CHARACTER VARYING(20),
+    Serial_ID CHARACTER VARYING(2000),
+    CONSTRAINT fk_shipcontaineritemid FOREIGN KEY (SHIP_CONTAINER_ITEM_ID)
+        REFERENCES schema_name_here.ASN_SHIP_CONTAINER_ITEM (SHIP_CONTAINER_ITEM_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_partner_product_id
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_partner_product_id
+(
+    Partner_Product_ID INTEGER PRIMARY KEY,
+    SHIP_CONTAINER_ITEM_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Partner_Class_Code CHARACTER VARYING(20),
+    Product_ID CHARACTER VARYING(20),
+    CONSTRAINT fk_shipcontaineritemid FOREIGN KEY (SHIP_CONTAINER_ITEM_ID)
+        REFERENCES schema_name_here.ASN_SHIP_CONTAINER_ITEM (SHIP_CONTAINER_ITEM_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
+--asn_trace_id
+CREATE TABLE IF NOT EXISTS schema_name_here.asn_trace_id
+(
+    Trace_ID INTEGER PRIMARY KEY,
+    SHIP_CONTAINER_ITEM_ID INTEGER NOT NULL,
+    CREATE_DATE TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now(),
+    Proprietary_Lot_ID CHARACTER VARYING(20),
+    CONSTRAINT fk_shipcontaineritemid FOREIGN KEY (SHIP_CONTAINER_ITEM_ID)
+        REFERENCES schema_name_here.ASN_SHIP_CONTAINER_ITEM (SHIP_CONTAINER_ITEM_ID) MATCH SIMPLE
+        ON UPDATE NO ACTION
+        ON DELETE NO ACTION
+);
