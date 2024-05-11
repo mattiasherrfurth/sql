@@ -1,5 +1,5 @@
 # SQL
-A collection of queries I have written in various professional and educational projects, where proprietary info has been scrubbed from the files.
+A collection of queries I have written in various professional and educational projects. It is both fascinating and irritating that there are so many flavors and implementations of SQL. I am most familiar with T-SQL, with some experience in PL/SQL and PostgreSQL. I have used SQL in other contexts such as custom ODBC clients for NoSQL data, SOQL in Salesforce, VizQL in Tableau, and simple selects on CloudTrail logs. All proprietary info and sensitive data have been scrubbed from the files.
 
 **Flavors**: PL/SQL, T-SQL, PostgreSQL, and a custom ODBC driver.
 
